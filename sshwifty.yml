@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sshwifty
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sshwifty
+  template:
+    metadata:
+      labels:
+        app: sshwifty
+    spec:
+      containers:
+      - image: niruix/sshwifty:latest
+        name: sshwifty
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: sshwifty
+  annotations:
+    dev.okteto.com/auto-ingress: "true"
+spec:
+  type: ClusterIP  
+  ports:
+  - name: "http-port-tcp"
+    port: 8182
+  selector:
+    app: sshwifty
